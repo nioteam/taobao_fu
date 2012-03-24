@@ -71,6 +71,7 @@ module TaobaoFu
     def sorted_params(options)
       {
         :app_key     => @settings['app_key'],
+        :session     => @settings['session'],
         :format      => OUTPUT_FORMAT,
         :v           => API_VERSION,
         :sign_method => SIGN_ALGORITHM,
