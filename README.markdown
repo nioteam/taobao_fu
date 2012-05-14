@@ -37,6 +37,7 @@ config/taobao.yml:
     defaults: &defaults
       app_key:          # YOUR_APP_KEY
       secret_key:       # YOUR_APP_SECRET_TOKEN
+      session:          # TOP-Session
       taobaoke_pid:     # YOUR_TAOBAOKE_PID
       taobaoke_nick:    # YOUR_TAOBAOKE_NICKNAME
 
