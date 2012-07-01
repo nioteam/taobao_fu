@@ -1,4 +1,5 @@
 require "uri"
+require "net/http"
 
 module TaobaoFu
   module Rest
@@ -7,24 +8,24 @@ module TaobaoFu
         res = request(url, 'GET', hashed_vars)
         process_result(res, url)
       end
-      
+
       def post(url, hashed_vars)
         res = request(url, 'POST', hashed_vars)
         process_result(res, url)
       end
-      
+
       def put(url, hashed_vars)
         res = request(url, 'PUT', hashed_vars)
         process_result(res, url)
       end
-      
+
       def delete(url, hashed_vars)
         res = request(url, 'DELETE', hashed_vars)
         process_result(res, url)
       end
-      
+
       protected
-      
+
         def request(url, method=nil, params = {})
           if !url || url.length < 1
             raise ArgumentError, 'Invalid url parameter'
@@ -32,14 +33,14 @@ module TaobaoFu
           if method && !['GET', 'POST', 'DELETE', 'PUT'].include?(method)
             raise NotImplementedError, 'HTTP %s not implemented' % method
           end
-          
+
           if method && method == 'GET'
             url = build_get_uri(url, params)
           end
           uri = URI.parse(url)
-          
+
           http = Net::HTTP.new(uri.host, uri.port)
-          
+
           if method && method == 'GET'
             req = Net::HTTP::Get.new(uri.request_uri)
           elsif method && method == 'DELETE'
@@ -51,10 +52,10 @@ module TaobaoFu
             req = Net::HTTP::Post.new(uri.request_uri)
             req.set_form_data(params)
           end
-          
+
           http.request(req)
         end
-        
+
         def build_get_uri(uri, params)
           if params && params.length > 0
             uri += '?' unless uri.include?('?')
@@ -62,11 +63,11 @@ module TaobaoFu
           end
           URI.escape(uri)
         end
-        
+
         def urlencode(params)
           params.to_a.collect! { |k, v| "#{k.to_s}=#{v.to_s}" }.join("&")
         end
-        
+
         def process_result(res, raw_url)
           if res.code =~ /\A2\d{2}\z/
             res.body
@@ -88,7 +89,7 @@ module TaobaoFu
             raise RuntimeError, "Maybe request timed out #{res}. HTTP status code #{res.code}"
           end
         end
-      
+
     end
   end
 end

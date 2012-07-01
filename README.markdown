@@ -10,29 +10,16 @@ TaobaoFu is developed against Ruby 1.8.6, 1.8.7, 1.9.1, 1.9.2
 
 ### Installation
 
-Get the TaobaoFu plugin from github.com:
- 
-    > cd your_rails_app
-    > rails plugin install git://github.com/why404/taobao_fu.git
+For Rails applications add the gem dependencies to your Gemfile:
 
-Or you can install it as a git submodule(Recommended):
+    gem "taobao_fu_reload"     # Required
 
-    > cd your_rails_app
-    > git submodule add git://github.com/why404/taobao_fu.git vendor/plugins/taobao_fu
-    > git submodule init
-    > git submodule update
+Setup of access the TOP API is handled by using automatic configuration with a config/taobao.yml. You can generate a taobao.yml via the following command:
 
-For Rails applications add the gem dependencies to your Gemfile: 
+    > rails generate taobao_fu:install
 
-    gem "crack"     # Required
-    gem "patron"    # Optional, if you set the :use_curl option is true in config/taobao.yml 
-
-Setup of access the TOP API is handled by using automatic configuration with a config/taobao.yml. You can generate a taobao.yml via the following command: 
-
-    > rails generate taobao_fu config
-
-An example configuration is as follows, with the default values showing: 
-config/taobao.yml: 
+An example configuration is as follows, with the default values showing:
+config/taobao.yml:
 
     defaults: &defaults
       app_key:          # YOUR_APP_KEY
@@ -63,9 +50,9 @@ Here is an example shows you how to get some information of a commodity from tao
 
     > cd your_rails_app
     > rails console
-    > TaobaoFu.get(:method => 'taobao.item.get', 
-                   :nick   => 'simul官方旗舰店', 
-                   :iid    => '3b54462a34e2ed84c330dc3e5fb4a94f', 
+    > TaobaoFu.get(:method => 'taobao.item.get',
+                   :nick   => 'simul官方旗舰店',
+                   :iid    => '3b54462a34e2ed84c330dc3e5fb4a94f',
                    :fields => 'title, price')
 
 There are four methods mapping HTTP verbs(GET/POST/PUT/DELETE).
@@ -83,4 +70,4 @@ There is also an additional method is using for switching between sandbox and pr
 
 ### Copyright
 
-Copyright (c) 2010 why404(why404#gmail), released under the MIT license.
+Copyright (c) 2010 why404(why404#gmail), reloaded 2012 NIOTEAM, released under the MIT license.
