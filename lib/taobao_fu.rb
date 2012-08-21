@@ -5,7 +5,6 @@ rescue LoadError
        "of Rails, please make sure crack is installed. \n "
   exit
 end
-# require "patron"
 require "digest/md5"
 require "yaml"
 require "uri"
@@ -28,11 +27,13 @@ module TaobaoFu
       apply_settings
     end
 
+    def settings=(settings)
+      @settings = settings
+      apply_settings
+    end
+
     def apply_settings
-      ENV['TAOBAO_API_KEY']    = @settings['app_key'].to_s
-      ENV['TAOBAO_SECRET_KEY'] = @settings['secret_key']
-      ENV['TAOBAOKE_PID']      = @settings['taobaoke_pid']
-      @base_url                = @settings['is_sandbox'] ? SANDBOX : PRODBOX
+      @base_url = @settings['is_sandbox'] ? SANDBOX : PRODBOX
 
       initialize_session if @settings['use_curl']
     end
