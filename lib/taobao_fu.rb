@@ -56,7 +56,11 @@ module TaobaoFu
       else
         @response = TaobaoFu::Rest.get(@base_url, generate_query_vars(sorted_params(options)))
       end
-      parse_result @response
+      if options.fetch(:method).start_with?("taobao.wangwang")
+        parse_result_xml @response
+      else  
+        parse_result_json @response 
+      end  
     end
 
     # http://toland.github.com/patron/
@@ -70,10 +74,12 @@ module TaobaoFu
     end
 
     def sorted_params(options)
+      output_format = OUTPUT_FORMAT
+      output_format = 'xml' if options.fetch(:method).start_with?("taobao.wangwang")
       {
         :app_key     => @settings['app_key'],
         :session     => @settings['session'],
-        :format      => OUTPUT_FORMAT,
+        :format      => output_format,
         :v           => API_VERSION,
         :sign_method => SIGN_ALGORITHM,
         :timestamp   => Time.now.strftime("%Y-%m-%d %H:%M:%S")
@@ -96,8 +102,12 @@ module TaobaoFu
       Digest::MD5.hexdigest(@settings['secret_key'] + param_string + @settings['secret_key']).upcase
     end
 
-    def parse_result(data)
+    def parse_result_json(data) 
       Crack::JSON.parse(data)
+    end
+    
+    def parse_result_xml(data) 
+      Crack::XML.parse(data)
     end
 
   end
